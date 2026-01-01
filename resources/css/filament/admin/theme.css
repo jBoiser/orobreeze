@@ -1,0 +1,117 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+.fi-sidebar {
+    height: 100vh !important;
+    top: 0 !important;
+    position: fixed !important;
+     background:
+          radial-gradient(
+        ellipse at center,
+        rgba(255,255,255,0.08),
+        transparent 60%
+        ),
+        linear-gradient(
+            to bottom,
+            #0e63a9,
+            #0b4f8a,
+            #062a4d
+        );
+    width: var(--sidebar-width) !important;
+    z-index: 40 !important;
+    margin-right: 20px !important;
+}
+
+.dark .fi-sidebar {
+    background-color: #1a202c !important;
+    color: white;
+}
+
+.dark .fi-sidebar-item-label {
+    color: white;
+}
+
+.dark .fi-icon {
+    color: white;
+}
+
+.dark .fi-topbar > nav {
+    background-color: #111827 !important;
+    border-bottom: 1px solid #374151;
+}
+
+.fi-main-ctn {
+    margin-inline-start: var(--sidebar-width) !important;
+    width: calc(100% - var(--sidebar-width)) !important;
+}
+
+.fi-topbar .fi-logo {
+    display: none;
+}
+
+
+html {
+    scrollbar-gutter: auto;
+}
+
+.fi-simple-layout{
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(255,255,255,0.08),
+            transparent 60%
+        ),
+        linear-gradient(
+            to bottom,
+            #062a4d,
+            #0b4f8a,
+            #0e63a9
+        );
+}
+
+.fi-header-heading {
+    color: #1e3a8a !important;
+}
+
+.dark .fi-header-heading {
+    color: #ffffff !important;
+}
+
+.fi-sidebar-item .fi-icon {
+    color: white !important;
+}
+
+.fi-sidebar-item.fi-active .fi-icon {
+    color: #3b82f6 !important; 
+}
+
+.fi-sidebar-item:hover:not(.fi-active) .fi-icon {
+    color: #3b82f6 !important; 
+}
+
+.fi-sidebar-item-label {
+    color: white !important;
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-label {
+    color: #3b82f6 !important; 
+    font-weight: bold;
+}
+
+.fi-sidebar-item:hover .fi-sidebar-item-label {
+    color: #3b82f6 !important;
+}
+
+/* This targets the Navigation Group Label */
+.fi-sidebar-group-label {
+    color: whitesmoke !important; 
+    text-transform: uppercase;
+}
+
+
+
+
+
+
