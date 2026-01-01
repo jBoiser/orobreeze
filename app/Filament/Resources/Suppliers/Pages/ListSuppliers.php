@@ -14,7 +14,7 @@ class ListSuppliers extends ListRecords
     {
         return [
             CreateAction::make()
-            ->label('New Supplier')
+                ->label('New Supplier')
                 ->icon('heroicon-o-plus')
                 ->modalHeading('Create New Supplier')
                 ->createAnother(false),

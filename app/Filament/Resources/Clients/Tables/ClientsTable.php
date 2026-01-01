@@ -31,7 +31,6 @@ class ClientsTable
                     ->label('Created On')
                     ->dateTime('M j, Y H:i')
                     ->sortable(),
-                // ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('name')
                     ->label('Client Name')
@@ -40,16 +39,13 @@ class ClientsTable
                 TextColumn::make('address')
                     ->searchable(),
 
-
                 TextColumn::make('email')
                     ->label('Email Address')
                     ->searchable(),
 
-
                 TextColumn::make('phone_number')
                     ->label('Contact Number')
                     ->searchable(),
-
 
                 TextColumn::make('company')
                     ->searchable()

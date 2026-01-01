@@ -86,7 +86,6 @@ class SupplierForm
                                     ->columnSpanFull(),
 
                             ])->columns(2),
-
                     ])
                     ->columnSpanFull(),
             ]);

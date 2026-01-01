@@ -40,7 +40,6 @@ class ClientForm
                                     ->afterStateHydrated(fn($state, $set) => $set('updated_at', \Carbon\Carbon::parse($state)->format('M j, Y H:i')))
                                     ->visible(fn($operation) => $operation === 'edit'),
 
-
                                 TextInput::make('name')
                                     ->label('Client Name')
                                     ->unique()

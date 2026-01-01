@@ -18,7 +18,6 @@ class ListClients extends ListRecords
                 ->label('New Client')
                 ->icon('heroicon-o-plus')
                 ->modalHeading('Create New Client')
-                // ->modalWidth('2xl')
                 ->createAnother(false),
         ];
     }
