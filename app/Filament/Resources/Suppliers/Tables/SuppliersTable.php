@@ -44,19 +44,23 @@ class SuppliersTable
                     ->label('Sales Contact')
                     ->searchable(),
 
+                TextColumn::make('address')
+                    ->label('Address')
+                    ->searchable(),
+
                 TextColumn::make('email_address')
                     ->label('Sales Email')
                     ->searchable(),
 
-                TextColumn::make('owner')
-                    ->searchable(),
+                // TextColumn::make('owner')
+                //     ->searchable(),
 
-                TextColumn::make('office_contact_number')
-                    ->label('Office Number')
-                    ->searchable(),
-                TextColumn::make('office_email_address')
-                    ->label('Office Email')
-                    ->searchable(),
+                // TextColumn::make('office_contact_number')
+                //     ->label('Office Number')
+                //     ->searchable(),
+                // TextColumn::make('office_email_address')
+                //     ->label('Office Email')
+                //     ->searchable(),
 
             ])
             ->filters([

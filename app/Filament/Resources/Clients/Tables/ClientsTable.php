@@ -33,7 +33,7 @@ class ClientsTable
                     ->sortable(),
 
                 TextColumn::make('name')
-                    ->label('Client Name')
+                    ->label('Name')
                     ->searchable(),
 
                 TextColumn::make('address')
@@ -47,9 +47,9 @@ class ClientsTable
                     ->label('Contact Number')
                     ->searchable(),
 
-                TextColumn::make('company')
-                    ->searchable()
-                    ->placeholder('N/A'),
+                // TextColumn::make('company')
+                //     ->searchable()
+                //     ->placeholder('N/A'),
             ])
             ->filters([
                 TrashedFilter::make(),

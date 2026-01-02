@@ -7,6 +7,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Validation\Rules\Unique;
 
 class SupplierForm
 {
@@ -19,28 +20,8 @@ class SupplierForm
                         Section::make('Supplier Sales Representative')
                             ->description('Point of contact for Orders and Sales')
                             ->schema([
-                                TextInput::make('name')
-                                    ->label('Sales Representative')
-                                    ->unique()
-                                    ->required(),
-
-                                TextInput::make('email_address')
-                                    ->unique()
-                                    ->email()
-                                    ->required(),
-
-                                TextInput::make('contact_number')
-                                    ->unique()
-                                    ->label('Sales Contact')
-                                    ->tel()
-                                    ->required(),
-
-                            ])->columns(3),
-
-                        Section::make('Supplier Information')
-                            ->schema([
                                 TextInput::make('supplier_id')
-                                    ->label('Supplier ID')
+                                    ->label('ID')
                                     ->unique()
                                     ->default(fn() => Supplier::generateNextSupplierId())
                                     ->disabled()
@@ -61,28 +42,50 @@ class SupplierForm
                                     ->afterStateHydrated(fn($state, $set) => $set('updated_at', \Carbon\Carbon::parse($state)->format('M j, Y H:i')))
                                     ->visible(fn($operation) => $operation === 'edit'),
 
-                                TextInput::make('company_name')
+                                TextInput::make('name')
+                                    ->label('Name')
+                                    ->unique()
                                     ->required(),
 
-                                TextInput::make('owner')
+                                TextInput::make('contact_number')
                                     ->unique()
-                                    ->label('Owner Name')
-                                    ->placeholder('Optional'),
+                                    ->label('Contact')
+                                    ->tel()
+                                    ->required(),
 
-                                TextInput::make('office_email_address')
+                                TextInput::make('address')
+                                    ->label('Address')
+                                    ->required(),
+
+                                TextInput::make('email_address')
                                     ->unique()
                                     ->email()
                                     ->required(),
 
-                                TextInput::make('office_contact_number')
-                                    ->unique()
-                                    ->label('Office Contact')
-                                    ->tel()
+                            ])->columns(2),
+
+                        Section::make('Supplier Information')
+                            ->schema([
+                                TextInput::make('company_name')
+                                    ->label('Company Name')
                                     ->required(),
 
+                                TextInput::make('owner')
+                                    ->unique()
+                                    ->label("Owner's Name (Optinal)"),
+
+                                TextInput::make('office_email_address')
+                                    ->label("Office Email Address (Optional)")
+                                    ->unique()
+                                    ->email(),
+
+                                TextInput::make('office_contact_number')
+                                    ->unique()
+                                    ->label("Office Contact (Optional)")
+                                    ->tel(),
+
                                 TextInput::make('office_address')
-                                    ->label('Office Address')
-                                    ->required()
+                                    ->label("Office Address (Optional)")
                                     ->columnSpanFull(),
 
                             ])->columns(2),

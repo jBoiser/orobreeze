@@ -15,6 +15,7 @@ class Supplier extends Model
         'company_name',
         'name',
         'contact_number',
+        'address',
         'email_address',
         'office_address',
         'owner',
