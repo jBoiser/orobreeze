@@ -53,7 +53,6 @@
             animation: snow-fall linear infinite;
         }
 
-        /* Snowflake variations */
         .snow-layer span:nth-child(1) {
             left: 5%;
             animation-duration: 14s;

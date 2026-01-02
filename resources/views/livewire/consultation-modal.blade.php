@@ -12,7 +12,7 @@
                 x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 scale-95"
                 x-transition:enter-end="opacity-100 scale-100"
-                class="frost-card w-full max-w-lg rounded-3xl p-8 relative shadow-2xl"
+                class="frost-card relative w-[95%] max-w-lg mx-auto rounded-3xl p-6 md:p-8 shadow-2xl"
                 @click.away="isOpen = false">
 
                 <button wire:click="toggleModal" class="absolute top-5 right-5 text-white/50 hover:text-white text-2xl z-10">&times;</button>
