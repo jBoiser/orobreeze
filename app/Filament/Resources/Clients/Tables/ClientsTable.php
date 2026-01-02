@@ -25,19 +25,23 @@ class ClientsTable
                 TextColumn::make('client_id')
                     ->label('Client ID')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('2xl'),
 
                 TextColumn::make('created_at')
                     ->label('Created On')
                     ->dateTime('M j, Y H:i')
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('2xl'),
 
                 TextColumn::make('name')
                     ->label('Name')
                     ->searchable(),
 
                 TextColumn::make('address')
-                    ->searchable(),
+                    ->label('Address')
+                    ->searchable()
+                    ->wrap(),
 
                 TextColumn::make('email')
                     ->label('Email Address')

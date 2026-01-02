@@ -62,7 +62,9 @@ class ClientForm
                                 TextInput::make('phone_number')
                                     ->unique()
                                     ->tel()
-                                    ->required(),
+                                    ->required()
+                                    ->mask('+63 999 9999 999')
+                                    ->placeholder('+63 xxx xxxx xxx'),
 
                                 TextInput::make('address')
                                     ->required()

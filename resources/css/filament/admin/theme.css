@@ -109,6 +109,50 @@ html {
     text-transform: uppercase;
 }
 
+/* ... keep your existing code above ... */
+
+/* Responsive adjustments for 13-inch screens (typically < 1440px) */
+@media screen and (max-width: 1440px) {
+    :root {
+        /* Slightly reduce sidebar width to give tables more room */
+        --sidebar-width: 16rem; 
+    }
+
+    .fi-main-ctn {
+        /* Ensure the main container respects the new width */
+        margin-inline-start: var(--sidebar-width) !important;
+        width: calc(100% - var(--sidebar-width)) !important;
+    }
+}
+
+/* Tablet/Small Laptop adjustments */
+@media screen and (max-width: 1024px) {
+    .fi-sidebar {
+        /* On smaller screens, Filament usually hides the sidebar, 
+           but since you forced 'fixed', we ensure it doesn't overlap content */
+        position: relative !important;
+        height: auto !important;
+        width: 100% !important;
+    }
+    
+    .fi-main-ctn {
+        margin-inline-start: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* Ensure modals don't exceed screen height on laptops */
+.fi-modal-window {
+    max-height: 95vh !important; /* Uses 85% of the viewport height */
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Make the form area scrollable while keeping the header/footer fixed */
+.fi-modal-content {
+    overflow-y: auto !important;
+    padding-bottom: 2rem !important;
+}
 
 
 

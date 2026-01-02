@@ -25,12 +25,14 @@ class SuppliersTable
                 TextColumn::make('supplier_id')
                     ->label('ID')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('2xl'),
 
                 TextColumn::make('created_at')
                     ->label('Created On')
                     ->dateTime('M j, Y H:i')
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('2xl'),
 
                 TextColumn::make('company_name')
                     ->label('Company Name')
@@ -46,7 +48,8 @@ class SuppliersTable
 
                 TextColumn::make('address')
                     ->label('Address')
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap(),
 
                 TextColumn::make('email_address')
                     ->label('Sales Email')

@@ -51,7 +51,9 @@ class SupplierForm
                                     ->unique()
                                     ->label('Contact')
                                     ->tel()
-                                    ->required(),
+                                    ->required()
+                                    ->mask('+63 999 9999 999')
+                                    ->placeholder('+63 xxx xxxx xxx'),
 
                                 TextInput::make('address')
                                     ->label('Address')
@@ -82,7 +84,9 @@ class SupplierForm
                                 TextInput::make('office_contact_number')
                                     ->unique()
                                     ->label("Office Contact (Optional)")
-                                    ->tel(),
+                                    ->tel()
+                                    ->mask('+63 999 9999 999')
+                                    ->placeholder('+63 xxx xxxx xxx'),
 
                                 TextInput::make('office_address')
                                     ->label("Office Address (Optional)")
