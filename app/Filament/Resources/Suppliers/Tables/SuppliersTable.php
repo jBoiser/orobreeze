@@ -23,7 +23,7 @@ class SuppliersTable
         return $table
             ->columns([
                 TextColumn::make('supplier_id')
-                    ->label('ID')
+                    ->label('Supplier ID')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -43,7 +43,7 @@ class SuppliersTable
                     ->searchable(),
 
                 TextColumn::make('contact_number')
-                    ->label('Sales Contact')
+                    ->label('Contact Number')
                     ->searchable(),
 
                 TextColumn::make('address')
@@ -52,7 +52,7 @@ class SuppliersTable
                     ->wrap(),
 
                 TextColumn::make('email_address')
-                    ->label('Sales Email')
+                    ->label('Email Address')
                     ->searchable(),
 
                 TextColumn::make('owner')
@@ -69,8 +69,8 @@ class SuppliersTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                TextColumn::make('modified_at')
-                    ->label('Modified On')
+                TextColumn::make('updated_at')
+                    ->label('Updated On')
                     ->dateTime('M j, Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

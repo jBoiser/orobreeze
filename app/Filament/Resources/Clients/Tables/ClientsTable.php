@@ -56,8 +56,8 @@ class ClientsTable
                     ->placeholder('N/A')
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                TextColumn::make('modified_at')
-                    ->label('Modified On')
+                TextColumn::make('updated_at')
+                    ->label('Updated On')
                     ->dateTime('M j, Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -47,6 +47,7 @@ class ClientForm
                                     ->maxLength(255),
 
                                 TextInput::make('company')
+                                    ->label('Company Name')
                                     ->nullable()
                                     ->maxLength(255),
                             ])->columns(2),
