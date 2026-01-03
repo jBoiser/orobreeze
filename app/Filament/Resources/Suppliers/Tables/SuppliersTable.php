@@ -55,15 +55,19 @@ class SuppliersTable
                     ->label('Sales Email')
                     ->searchable(),
 
-                // TextColumn::make('owner')
-                //     ->searchable(),
+                TextColumn::make('owner')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
-                // TextColumn::make('office_contact_number')
-                //     ->label('Office Number')
-                //     ->searchable(),
-                // TextColumn::make('office_email_address')
-                //     ->label('Office Email')
-                //     ->searchable(),
+                TextColumn::make('office_contact_number')
+                    ->label('Office Number')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('office_email_address')
+                    ->label('Office Email')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
             ])
             ->filters([
