@@ -63,8 +63,8 @@ class ClientForm
                                     ->unique()
                                     ->tel()
                                     ->required()
-                                    ->mask('+63 999 9999 999')
-                                    ->placeholder('+63 xxx xxxx xxx'),
+                                    ->mask('+63 999 999 9999')
+                                    ->placeholder('+63 xxx xxx xxxx'),
 
                                 TextInput::make('address')
                                     ->required()

@@ -152,7 +152,7 @@
         </div>
 
         <h1 class="text-3xl md:text-6xl font-extrabold text-cyan-300 uppercase tracking-[0.15em] mb-3 leading-tight">
-            Coming Soon
+            Coming Soon!!
         </h1>
 
         <h2 class="text-xl md:text-3xl font-bold mb-6 tracking-tight leading-tight opacity-90">

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Resources\Clients;
+namespace App\Filament\Resources\Brands;
 
-use App\Filament\Resources\Clients\Pages\ListClients;
-use App\Filament\Resources\Clients\Schemas\ClientForm;
-use App\Filament\Resources\Clients\Tables\ClientsTable;
-use App\Models\Client;
+use App\Filament\Resources\Brands\Pages\ListBrands;
+use App\Filament\Resources\Brands\Schemas\BrandForm;
+use App\Filament\Resources\Brands\Tables\BrandsTable;
+use App\Models\Brand;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -15,24 +15,24 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
 
-class ClientResource extends Resource
+class BrandResource extends Resource
 {
-    protected static ?string $model = Client::class;
+    protected static ?string $model = Brand::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Contacts';
+    protected static string | UnitEnum | null $navigationGroup = 'Products';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'brand';
 
     public static function form(Schema $schema): Schema
     {
-        return ClientForm::configure($schema);
+        return BrandForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return ClientsTable::configure($table);
+        return BrandsTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -45,7 +45,7 @@ class ClientResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListClients::route('/'),
+            'index' => ListBrands::route('/'),
         ];
     }
 
@@ -56,5 +56,4 @@ class ClientResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
-
 }

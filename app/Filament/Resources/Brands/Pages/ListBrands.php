@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Filament\Resources\Clients\Pages;
+namespace App\Filament\Resources\Brands\Pages;
 
-use App\Filament\Resources\Clients\ClientResource;
+use App\Filament\Resources\Brands\BrandResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
-class ListClients extends ListRecords
+class ListBrands extends ListRecords
 {
-    protected static string $resource = ClientResource::class;
+    protected static string $resource = BrandResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             CreateAction::make()
-                ->label('New Client')
+                ->label('New Brand')
                 ->icon('heroicon-o-plus')
-                ->modalHeading('Create New Client')
+                ->modalHeading('Create New Brand')
                 ->createAnother(false),
         ];
     }

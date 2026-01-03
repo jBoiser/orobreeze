@@ -7,7 +7,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Validation\Rules\Unique;
 
 class SupplierForm
 {
@@ -85,8 +84,8 @@ class SupplierForm
                                     ->unique()
                                     ->label("Office Contact (Optional)")
                                     ->tel()
-                                    ->mask('+63 999 9999 999')
-                                    ->placeholder('+63 xxx xxxx xxx'),
+                                    ->mask('+63 999 999 9999')
+                                    ->placeholder('+63 xxx xxx xxxx'),
 
                                 TextInput::make('office_address')
                                     ->label("Office Address (Optional)")
