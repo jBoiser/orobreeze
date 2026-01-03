@@ -26,17 +26,17 @@ class SuppliersTable
                     ->label('ID')
                     ->searchable()
                     ->sortable()
-                    ->visibleFrom('2xl'),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
                     ->label('Created On')
                     ->dateTime('M j, Y H:i')
                     ->sortable()
-                    ->visibleFrom('2xl'),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('company_name')
                     ->label('Company Name')
-                    ->searchable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('name')
                     ->label('Sales Representative')
@@ -67,6 +67,12 @@ class SuppliersTable
                 TextColumn::make('office_email_address')
                     ->label('Office Email')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('modified_at')
+                    ->label('Modified On')
+                    ->dateTime('M j, Y H:i')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
             ])

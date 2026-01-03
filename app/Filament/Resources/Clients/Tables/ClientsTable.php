@@ -26,13 +26,13 @@ class ClientsTable
                     ->label('Client ID')
                     ->searchable()
                     ->sortable()
-                    ->visibleFrom('2xl'),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
                     ->label('Created On')
                     ->dateTime('M j, Y H:i')
                     ->sortable()
-                    ->visibleFrom('2xl'),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('name')
                     ->label('Name')
@@ -51,9 +51,16 @@ class ClientsTable
                     ->label('Contact Number')
                     ->searchable(),
 
-                // TextColumn::make('company')
-                //     ->searchable()
-                //     ->placeholder('N/A'),
+                TextColumn::make('company')
+                    ->searchable()
+                    ->placeholder('N/A')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('modified_at')
+                    ->label('Modified On')
+                    ->dateTime('M j, Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 TrashedFilter::make(),
