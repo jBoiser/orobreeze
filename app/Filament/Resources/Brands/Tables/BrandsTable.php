@@ -27,8 +27,7 @@ class BrandsTable
             ->columns([
                 ImageColumn::make('logo')
                     ->label('Brand Logo')
-                    ->disk('public')
-                    ->circular(),
+                    ->disk('public'),
 
                 TextColumn::make('name')
                     ->searchable()
