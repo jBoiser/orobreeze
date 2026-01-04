@@ -7,14 +7,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Utilities\Set;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
-
-use App\Models\Product;
-
-use function Laravel\Prompts\select;
 
 class ProductForm
 {

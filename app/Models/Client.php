@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model
 {
@@ -19,10 +20,6 @@ class Client extends Model
         'company'
     ];
 
-    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
     public static function generateNextClientId(): string
     {
         $lastClient = self::withTrashed()->latest('id')->first();

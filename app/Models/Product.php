@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Brand;
-use App\Models\Installation;
+use App\Models\JobOrder;
 use Illuminate\Support\Str;
 
 
@@ -34,9 +34,14 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    // public function installations(): HasMany
-    // {
-    //     return $this->hasMany(Installation::class);
-    // }
+    public function jobOrder(): HasMany
+    {
+        return $this->hasMany(JobOrder::class);
+    }
+
+     public function installation(): HasMany
+    {
+        return $this->hasMany(Installation::class);
+    }
     
 }
