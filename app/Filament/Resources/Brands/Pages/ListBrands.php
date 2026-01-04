@@ -17,7 +17,8 @@ class ListBrands extends ListRecords
                 ->label('New Brand')
                 ->icon('heroicon-o-plus')
                 ->modalHeading('Create New Brand')
-                ->createAnother(false),
+                ->createAnother(false)
+                ->modalWidth('xl'),
         ];
     }
 }

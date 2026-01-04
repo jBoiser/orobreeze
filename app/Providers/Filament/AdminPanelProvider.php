@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationGroup;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -41,6 +42,14 @@ class AdminPanelProvider extends PanelProvider
             )
             ->colors([
                 'primary' => Color::Blue,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Job Orders'),
+                NavigationGroup::make()
+                    ->label('Contracts'),
+                NavigationGroup::make()
+                    ->label('Products'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

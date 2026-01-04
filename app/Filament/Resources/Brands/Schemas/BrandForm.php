@@ -28,30 +28,21 @@ class BrandForm
                                         $set('slug', Str::slug($state))
                                     ),
 
-                                TextInput::make('slug')
-                                    ->required()
-                                    ->unique(ignoreRecord: true)
-                                    ->readOnly()
-                                    ->dehydrated(),
-                            ]),
+                                // TextInput::make('slug')
+                                //     ->required()
+                                //     ->unique(ignoreRecord: true)
+                                //     ->readOnly()
+                                //     ->dehydrated(),
 
-                    ]),
-
-                Group::make()
-                    ->schema([
-                        Section::make('Brand Logo')
-                            ->schema([
                                 FileUpload::make('logo')
                                     ->image()
                                     ->rules(['mimes:jpeg,png,webp', 'max:2048'])
                                     ->disk('public')
                                     ->directory('brand-logos')
                                     // Removed imageEditor() to avoid nested overlay interfering with modal close
-                                    ->visibility('public')
-                                    ->columnSpanFull(),
-                            ])
-                            ->columns(2),
-                    ]),
+                                    ->visibility('public'),
+                            ]),
+                    ])->columnSpanFull(),
             ]);
     }
 }
