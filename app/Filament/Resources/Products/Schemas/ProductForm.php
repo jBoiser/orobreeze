@@ -35,6 +35,7 @@ class ProductForm
                                     ->required(),
 
                                 TextInput::make('model_name')
+                                    ->label('Model No.')
                                     ->unique()
                                     ->required()
                                     ->placeholder('e.g. Premium Inverter')
@@ -47,6 +48,7 @@ class ProductForm
                                 //     ->dehydrated(),
 
                                 Select::make('hp_capacity')
+                                    ->label('Capacity')
                                     ->options([
                                         '1.0HP' => '1.0 HP',
                                         '1.5HP' => '1.5 HP',
@@ -55,10 +57,11 @@ class ProductForm
                                     ])->required(),
 
                                 Select::make('type')
+                                    ->label('Type')
                                     ->options([
-                                        'window' => 'Window Type',
-                                        'split' => 'Split Type',
-                                        'floor' => 'Floor Mounted',
+                                        'Window Type' => 'Window Type',
+                                        'Split Type' => 'Split Type',
+                                        'Floor Mounted' => 'Floor Mounted',
                                     ])->required(),
 
                                 Select::make('is_inverter')
@@ -70,7 +73,7 @@ class ProductForm
                                     ->default(true),
 
                                 TextInput::make('srp')
-                                    ->label('SRP')
+                                    ->label('Srp')
                                     ->prefix('₱')
                                     ->extraAlpineAttributes([
                                         'x-mask:dynamic' => '$money($input, \'.\', \',\', 2)',
@@ -85,8 +88,9 @@ class ProductForm
 
                                 TextInput::make('description')
                                     ->label('Description')
-                                    ->placeholder('Brief description about the product'),
-
+                                    ->placeholder('Brief description about the product')
+                                    ->columnSpanFull(),
+                                    
                             ])->columns(2),
 
                     ])
