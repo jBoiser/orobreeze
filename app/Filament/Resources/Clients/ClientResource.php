@@ -19,7 +19,7 @@ class ClientResource extends Resource
 {
     protected static ?string $model = Client::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Contacts';
+    protected static string | UnitEnum | null $navigationGroup = 'Contact Management';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 

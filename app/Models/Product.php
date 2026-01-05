@@ -16,8 +16,18 @@ class Product extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'brand_id', 'model_name', 'slug', 'hp_capacity', 
-        'type', 'is_inverter', 'description', 'srp'
+        'brand_id',
+        'model_name',
+        'slug',
+        'hp_capacity',
+        'unit_type',
+        'refrigerant_type',
+        // 'window_model',
+        // 'indoor_model',
+        'outdoor_model',
+        'is_inverter',
+        'description',
+        'srp'
     ];
 
     protected static function booted(): void
@@ -39,9 +49,8 @@ class Product extends Model
         return $this->hasMany(JobOrder::class);
     }
 
-     public function installation(): HasMany
+    public function installation(): HasMany
     {
         return $this->hasMany(Installation::class);
     }
-    
 }

@@ -11,20 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('products', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('brand_id')->constrained()->cascadeOnDelete();
-        
-        $table->string('model_name');
-        $table->string('slug')->unique();
-        $table->string('hp_capacity'); 
-        $table->string('type');   
-        $table->boolean('is_inverter')->default(true);
-        $table->decimal('srp', 10, 2)->nullable();
-        $table->text('description')->nullable();
-        $table->softDeletes();
-        $table->timestamps();
-    });
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('brand_id')->constrained()->cascadeOnDelete();
+            $table->string('model_name');
+            $table->string('slug')->unique();
+            $table->string('hp_capacity');
+            $table->string('unit_type');
+            $table->boolean('is_inverter')->default(true);
+            $table->decimal('srp', 10, 2)->nullable();
+            $table->text('description')->nullable();
+            $table->enum('refrigerant_type',['R410A', 'R32'])->nullable();
+            $table->string('outdoor_model')->nullable()->default('-');
+            $table->softDeletes();
+            $table->timestamps();
+        });
     }
 
     /**

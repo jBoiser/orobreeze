@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
-
+use Dom\Text;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Forms\Components\Placeholder;
 use Filament\Schemas\Schema;
+use App\Models\Brand;
 
 class ProductForm
 {
@@ -41,31 +43,6 @@ class ProductForm
                                 //     ->readOnly()
                                 //     ->dehydrated(),
 
-                                Select::make('hp_capacity')
-                                    ->label('Capacity')
-                                    ->options([
-                                        '1.0HP' => '1.0 HP',
-                                        '1.5HP' => '1.5 HP',
-                                        '2.0HP' => '2.0 HP',
-                                        '2.5HP' => '2.5 HP',
-                                    ])->required(),
-
-                                Select::make('type')
-                                    ->label('Type')
-                                    ->options([
-                                        'Window Type' => 'Window Type',
-                                        'Split Type' => 'Split Type',
-                                        'Floor Mounted' => 'Floor Mounted',
-                                    ])->required(),
-
-                                Select::make('is_inverter')
-                                    ->label('Inverter Technology')
-                                    ->options([
-                                        '1' => 'Yes',
-                                        '0' => 'No',
-                                    ])
-                                    ->default(true),
-
                                 TextInput::make('srp')
                                     ->label('Srp')
                                     ->prefix('₱')
@@ -84,10 +61,81 @@ class ProductForm
                                     ->label('Description')
                                     ->placeholder('Brief description about the product')
                                     ->columnSpanFull(),
+
+                            ])->columns(2),
+
+                        Section::make('Aircon Unit')
+                            ->description('Aircon Unit Details')
+                            ->schema([
+
+                                Select::make('unit_type')
+                                    ->label('Unit Type')
+                                    ->options([
+                                        'Window Type' => 'Window Type',
+                                        'Split Type' => 'Split Type',
+                                        'Floor Mounted' => 'Floor Mounted',
+                                    ])
+                                    ->required()
+                                    ->live() // Essential: tells Filament to watch for changes
+                                    ->afterStateUpdated(function (callable $set, $state) {
+                                        // Clear logic: if Window Type is chosen, clear Split fields, and vice versa
+                                        if ($state === 'Window Type') {
+                                            $set('indoor_model', '-');
+                                            $set('outdoor_model', '-');
+                                        } else {
+                                            $set('window_model', '-');
+                                        }
+                                    }),
+
+                                Select::make('hp_capacity')
+                                    ->label('Capacity')
+                                    ->options([
+                                        '1.0HP' => '1.0 HP',
+                                        '1.5HP' => '1.5 HP',
+                                        '2.0HP' => '2.0 HP',
+                                        '2.5HP' => '2.5 HP',
+                                    ])->required(),
+
+                                // TextInput::make('window_model')
+                                //     ->label('Window Model')
+                                //     ->placeholder('e.g. W1200')
+                                //     ->visible(fn(callable $get) => $get('unit_type') === 'Window Type')
+                                //     ->required(fn(callable $get) => $get('unit_type') === 'Window Type'),
+
+                                // TextInput::make('indoor_model')
+                                //     ->label('Split Indoor Model')
+                                //     ->placeholder('e.g. SI1200')
+                                //     // Show for Split Type OR Floor Mounted (based on your "if not" logic)
+                                //     ->visible(fn(callable $get) => $get('unit_type') !== 'Window Type' && filled($get('unit_type')))
+                                //     ->required(fn(callable $get) => $get('unit_type') !== 'Window Type'),
+
+                                TextInput::make('outdoor_model')
+                                    ->label('Split Outdoor Model')
+                                    ->placeholder('e.g. SO1200')
+                                    ->visible(fn(callable $get) => $get('unit_type') !== 'Window Type' && filled($get('unit_type')))
+                                    ->required(fn(callable $get) => $get('unit_type') !== 'Window Type'),
+
+
+                                Select::make('is_inverter')
+                                    ->label('Inverter Technology')
+                                    ->options([
+                                        '1' => 'Yes',
+                                        '0' => 'No',
+                                    ])
+                                    ->default(true),
                                     
+                                    Select::make('refrigerant_type')
+                                    ->label('Refrigerant Type')
+                                    ->options([
+                                        'R410A' => 'R410A',
+                                        'R32' => 'R32',
+                                    ])
+                                    ->required(),
+
                             ])->columns(2),
 
                     ])
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
     }

@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandLogo(asset('images/logo.png'))
-            ->brandLogoHeight('15rem')
+            ->brandLogoHeight('10rem')
             ->sidebarWidth('18rem')
             ->maxContentWidth('full')
             ->favicon(asset('images/favicon.png'))
@@ -45,11 +45,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('Job Orders'),
+                    ->label('Contract Management'),
                 NavigationGroup::make()
-                    ->label('Contracts'),
+                    ->label('Task Management'),
                 NavigationGroup::make()
-                    ->label('Products'),
+                    ->label('Product Management'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

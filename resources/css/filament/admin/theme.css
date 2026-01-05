@@ -81,6 +81,7 @@ html {
 
 .fi-sidebar-item .fi-icon {
     color: white !important;
+    font-size: small;
 }
 
 .fi-sidebar-item.fi-active .fi-icon {
@@ -93,6 +94,7 @@ html {
 
 .fi-sidebar-item-label {
     color: white !important;
+    font-size: small;
 }
 
 .fi-sidebar-item.fi-active .fi-sidebar-item-label {
@@ -106,8 +108,19 @@ html {
 
 .fi-sidebar-group-label {
     color: whitesmoke !important; 
-    text-transform: uppercase;
+    font-size: smaller;
+    margin-bottom: -1.5rem !important;
 }
+
+/* Decrease the padding of the sidebar item container */
+.fi-sidebar-item-btn {
+    padding-top: 0.35rem !important;    /* Vertical padding (Top) */
+    padding-bottom: 0.35rem !important; /* Vertical padding (Bottom) */
+    padding-inline-start: 0.5rem !important; /* Horizontal padding (Left) */
+    padding-inline-end: 0.5rem !important;   /* Horizontal padding (Right) */
+    min-height: 1rem !important;
+}
+
 
 /* ... keep your existing code above ... */
 

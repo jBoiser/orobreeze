@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -39,19 +40,29 @@ class ProductsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
+                TextColumn::make('unit_type')
+                    ->label('Unit Type')
+                    ->sortable()
+                    ->searchable(),
+
                 TextColumn::make('hp_capacity')
                     ->label('Capacity')
                     ->sortable()
                     ->searchable(),
-
-                TextColumn::make('type')
-                    ->label('Type')
+                    
+                TextColumn::make('outdoor_model')
+                    ->label('Outdoor Model')
                     ->sortable()
                     ->searchable(),
 
                 IconColumn::make('is_inverter')
                     ->boolean()
                     ->label('Inverter'),
+
+                TextColumn::make('refrigerant_type')
+                    ->label('Refrigerant Type')
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('srp')
                     ->money('PHP')
