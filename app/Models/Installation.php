@@ -11,23 +11,13 @@ class Installation extends Model
     use softDeletes;
 
     protected $fillable = [
-        'job_order_id',        
-        'brand_id',         
-        'product_id',       
-        'model_name',      
-        'unit_type',        
-        'srp',              
-        'refrigerant_type', 
-        'is_inverter',      
-        'description',      
-        'hp_capacity',      
-        'outdoor_model', 
+        'job_order_id',
+        'description',
         'start_date',
         'end_date',
         'service_by',
         'status',
-        'remarks', 
-           
+        'remarks',
     ];
 
     public function product(): BelongsTo
@@ -44,4 +34,10 @@ class Installation extends Model
     {
         return $this->belongsTo(brand::class);
     }
+
+      public function items()
+    {
+        return $this->hasMany(InstallationItem::class);
+    }
+    
 }

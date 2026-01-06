@@ -51,7 +51,6 @@ class ProductForm
                                     ])
                                     ->dehydrateStateUsing(fn($state) => str_replace(',', '', $state))
                                     ->formatStateUsing(fn($state) => number_format((float) $state, 2, '.', ','))
-                                    ->required()
                                     ->extraInputAttributes([
                                         'onfocus' => 'this.select()',
                                     ])
@@ -95,19 +94,6 @@ class ProductForm
                                         '2.0HP' => '2.0 HP',
                                         '2.5HP' => '2.5 HP',
                                     ])->required(),
-
-                                // TextInput::make('window_model')
-                                //     ->label('Window Model')
-                                //     ->placeholder('e.g. W1200')
-                                //     ->visible(fn(callable $get) => $get('unit_type') === 'Window Type')
-                                //     ->required(fn(callable $get) => $get('unit_type') === 'Window Type'),
-
-                                // TextInput::make('indoor_model')
-                                //     ->label('Split Indoor Model')
-                                //     ->placeholder('e.g. SI1200')
-                                //     // Show for Split Type OR Floor Mounted (based on your "if not" logic)
-                                //     ->visible(fn(callable $get) => $get('unit_type') !== 'Window Type' && filled($get('unit_type')))
-                                //     ->required(fn(callable $get) => $get('unit_type') !== 'Window Type'),
 
                                 TextInput::make('outdoor_model')
                                     ->label('Split Outdoor Model')

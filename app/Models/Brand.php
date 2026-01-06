@@ -27,4 +27,13 @@ class Brand extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function items()
+    {
+        return $this->hasMany(InstallationItem::class);
+    }
+
+    public function installation()
+    {
+        return $this->hasMany(installation::class);
+    }
 }

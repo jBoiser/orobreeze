@@ -11,25 +11,36 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Migration for Installations
         Schema::create('installations', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             $table->foreignId('job_order_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('brand_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->string('model_name')->nullable()->default('-');
-            $table->string('outdoor_model')->nullable()->default('-');
-            $table->string('unit_type')->nullable(); 
-            $table->decimal('srp', 12, 2)->nullable();
-            $table->string('refrigerant_type')->nullable();
-            $table->boolean('is_inverter')->default(true);
-            $table->text('description')->nullable();
-            $table->string('hp_capacity')->nullable();
-            $table->enum('service_by', ['Team A', 'Team B'])->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->enum('status', ['onHold', 'onGoing', 'Cancelled'])->default('onHold');
+            $table->string('service_by');
+            $table->string('status')->default('onHold');
+            $table->decimal('total_price', 12, 2)->default(0); // Grand total
             $table->text('remarks')->nullable();
             $table->softDeletes();
+            $table->timestamps();
+        });
+
+        // Migration for Installation Items (The Repeater data)
+        Schema::create('installation_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('installation_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('brand_id')->constrained();
+            $table->foreignId('product_id')->constrained();
+            $table->string('model_name');
+            $table->string('unit_type');
+            $table->string('refrigerant_type')->nullable();
+            $table->string('hp_capacity')->nullable();
+            $table->string('outdoor_model')->nullable();
+            $table->decimal('srp', 12, 2)->default(0);
+            $table->integer('quantity')->default(1);
+            $table->decimal('discount', 5, 2)->default(0); // Percentage
+            $table->decimal('price', 12, 2)->default(0);
+            $table->softDeletes(); // Subtotal for this row
             $table->timestamps();
         });
     }
