@@ -14,6 +14,8 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Repeater;
 use App\Models\Product;
+use App\Models\JobOrder;
+
 
 
 class InstallationsForm
@@ -57,7 +59,25 @@ class InstallationsForm
                                     ->relationship('jobOrder', 'jo_number')
                                     ->searchable()
                                     ->preload()
-                                    ->required(),
+                                    ->required()
+                                    ->live()
+                                    ->afterStateUpdated(function (Set $set, $state) {
+                                        $jobOrder = JobOrder::with('client')->find($state);
+                                        $set('client_name', $jobOrder?->client?->name ?? '');
+                                    }),
+
+                                TextInput::make('client_name')
+                                    ->label('Client Name')
+                                    ->disabled()
+                                    ->dehydrated(false)
+                                    // This runs when the form loads (Edit/View modes)
+                                    ->afterStateHydrated(function (Set $set, Get $get, $state) {
+                                        $jobOrderId = $get('job_order_id');
+                                        if ($jobOrderId) {
+                                            $jobOrder = JobOrder::with('client')->find($jobOrderId);
+                                            $set('client_name', $jobOrder?->client?->name ?? '');
+                                        }
+                                    }),
 
                                 DatePicker::make('start_date')
                                     ->label('Start Date'),

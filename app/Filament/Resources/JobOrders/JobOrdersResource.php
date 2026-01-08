@@ -15,6 +15,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Clusters\Task\TaskCluster;
 use UnitEnum;
 
 
@@ -22,13 +23,15 @@ class JobOrdersResource extends Resource
 {
     protected static ?string $model = JobOrder::class;
 
-     protected static string | UnitEnum | null $navigationGroup = 'Task Management';
+    // protected static string | UnitEnum | null $navigationGroup = 'Task Management';
 
-     protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 1;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'JobOrders';
+
+    protected static ?string $cluster = TaskCluster::class;
 
     public static function form(Schema $schema): Schema
     {

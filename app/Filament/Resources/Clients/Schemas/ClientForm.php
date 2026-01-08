@@ -42,11 +42,13 @@ class ClientForm
 
                                 TextInput::make('name')
                                     ->label('Client Name')
+                                    ->placeholder('Full Name')
                                     ->unique()
                                     ->required()
                                     ->maxLength(255),
 
                                 TextInput::make('company')
+                                    ->placeholder('Optional')
                                     ->label('Company Name')
                                     ->nullable()
                                     ->maxLength(255),
@@ -56,6 +58,7 @@ class ClientForm
                             ->schema([
                                 TextInput::make('email')
                                     ->label('Email Address')
+                                    ->placeholder('Email Address')
                                     ->unique()
                                     ->email()
                                     ->required(),
@@ -68,6 +71,7 @@ class ClientForm
                                     ->placeholder('+63 xxx xxx xxxx'),
 
                                 TextInput::make('address')
+                                    ->placeholder('Street, Barangay, City, State')
                                     ->required()
                                     ->columnSpanFull(),
                             ])->columns(2),

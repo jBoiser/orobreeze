@@ -23,24 +23,40 @@ class JobOrder extends Model
     /**
      * Auto-generate JO Number on Creation
      */
-    protected static function booted()
+
+       public static function generateNextJobOrder(): string
     {
-        static::creating(function ($jobOrder) {
-            // Get the last record to determine the next number
-            $lastOrder = self::orderBy('id', 'desc')->first();
+        $lastJobOrder = self::withTrashed()->latest('id')->first();
 
-            if (!$lastOrder) {
-                $nextNumber = 1;
-            } else {
-                // Extract the numeric part from 'OB-JO-001'
-                $lastNumber = (int) str_replace('OB-JO-', '', $lastOrder->jo_number);
-                $nextNumber = $lastNumber + 1;
-            }
+        if (! $lastJobOrder) {
+            return 'OB-C-001';
+        }
 
-            // Pad with zeros to maintain the 001 format
-            $jobOrder->jo_number = 'OB-JO-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-        });
+        $lastNumber = (int) str_replace('OB-JO-', '', $lastJobOrder->jo_number);
+
+        $nextNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+
+        return "OB-JO-{$nextNumber}";
     }
+
+    // protected static function booted()
+    // {
+    //     static::creating(function ($jobOrder) {
+    //         // Get the last record to determine the next number
+    //         $lastOrder = self::orderBy('id', 'desc')->first();
+
+    //         if (!$lastOrder) {
+    //             $nextNumber = 1;
+    //         } else {
+    //             // Extract the numeric part from 'OB-JO-001'
+    //             $lastNumber = (int) str_replace('OB-JO-', '', $lastOrder->jo_number);
+    //             $nextNumber = $lastNumber + 1;
+    //         }
+
+    //         // Pad with zeros to maintain the 001 format
+    //         $jobOrder->jo_number = 'OB-JO-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+    //     });
+    // }
 
     /**
      * Relationship: A Job Order belongs to a Client

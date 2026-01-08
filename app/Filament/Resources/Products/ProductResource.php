@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products;
 
+use App\Filament\Clusters\AcProducts\AcProductsCluster;
 use App\Filament\Resources\Products\Pages\CreateProduct;
 use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;
@@ -21,11 +22,13 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Product Management';
+    // protected static string | UnitEnum | null $navigationGroup = 'Product Management';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBolt;
 
     protected static ?string $recordTitleAttribute = 'product';
+
+    protected static ?string $cluster = AcProductsCluster::class;
 
     public static function form(Schema $schema): Schema
     {

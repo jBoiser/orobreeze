@@ -1,40 +1,28 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
-
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
 
+/* 1. Root Variables & Global */
+:root {
+    --sidebar-width: 20rem; /* Define default here */
+}
+
+html { scrollbar-gutter: auto; }
+
+/* 2. Sidebar Base Style (Light Mode Gradient) */
 .fi-sidebar {
     height: 100vh !important;
     top: 0 !important;
     position: fixed !important;
-     background:
-          radial-gradient(
-        ellipse at center,
-        rgba(255,255,255,0.08),
-        transparent 60%
-        ),
-        linear-gradient(
-            to bottom,
-            #0e63a9,
-            #0b4f8a,
-            #062a4d
-        );
-    width: var(--sidebar-width) !important;
     z-index: 40 !important;
-    margin-right: 20px !important;
+    width: var(--sidebar-width) !important;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.08), transparent 60%),
+                linear-gradient(to bottom, #0e63a9, #0b4f8a, #062a4d) !important;
 }
 
+/* 3. Dark Mode Overrides */
 .dark .fi-sidebar {
-    background-color: #1a202c !important;
-    color: white;
-}
-
-.dark .fi-sidebar-item-label {
-    color: white;
-}
-
-.dark .fi-icon {
-    color: white;
+    background: #1a202c !important; /* Replaces gradient with solid dark */
 }
 
 .dark .fi-topbar > nav {
@@ -42,132 +30,135 @@
     border-bottom: 1px solid #374151;
 }
 
-.fi-main-ctn {
-    margin-inline-start: var(--sidebar-width) !important;
-    width: calc(100% - var(--sidebar-width)) !important;
-}
-
-.fi-topbar .fi-logo {
-    display: none;
-}
-
-
-html {
-    scrollbar-gutter: auto;
-}
-
-.fi-simple-layout{
-    background:
-        radial-gradient(
-            ellipse at center,
-            rgba(255,255,255,0.08),
-            transparent 60%
-        ),
-        linear-gradient(
-            to bottom,
-            #062a4d,
-            #0b4f8a,
-            #0e63a9
-        );
-}
-
-.fi-header-heading {
-    color: #1e3a8a !important;
-}
-
-.dark .fi-header-heading {
-    color: #ffffff !important;
-}
-
+/* 4. Sidebar Items (Icons/Labels) - Simplified */
+.fi-sidebar-item-label, 
 .fi-sidebar-item .fi-icon {
-    color: white !important;
+    color: rgb(255, 255, 255) !important;
     font-size: small;
 }
 
-.fi-sidebar-item.fi-active .fi-icon {
-    color: #3b82f6 !important; 
-}
-
+.fi-sidebar-item.fi-active .fi-icon,
+.fi-sidebar-item.fi-active .fi-sidebar-item-label,
+.fi-sidebar-item:hover .fi-sidebar-item-label,
 .fi-sidebar-item:hover:not(.fi-active) .fi-icon {
     color: #3b82f6 !important; 
 }
 
-.fi-sidebar-item-label {
-    color: white !important;
-    font-size: small;
-}
-
 .fi-sidebar-item.fi-active .fi-sidebar-item-label {
-    color: #3b82f6 !important; 
     font-weight: bold;
-}
-
-.fi-sidebar-item:hover .fi-sidebar-item-label {
-    color: #3b82f6 !important;
 }
 
 .fi-sidebar-group-label {
     color: whitesmoke !important; 
     font-size: smaller;
-    margin-bottom: -1.5rem !important;
 }
 
-/* Decrease the padding of the sidebar item container */
-.fi-sidebar-item-btn {
-    padding-top: 0.35rem !important;    /* Vertical padding (Top) */
-    padding-bottom: 0.35rem !important; /* Vertical padding (Bottom) */
-    padding-inline-start: 0.5rem !important; /* Horizontal padding (Left) */
-    padding-inline-end: 0.5rem !important;   /* Horizontal padding (Right) */
-    min-height: 1rem !important;
+/* 5. Main Content Layout */
+.fi-main-ctn {
+    margin-inline-start: var(--sidebar-width) !important;
+    width: calc(100% - var(--sidebar-width)) !important;
 }
 
+.fi-topbar .fi-logo { display: none; }
 
-/* ... keep your existing code above ... */
+/* 6. Simple Layout & Header */
+.fi-simple-layout {
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.08), transparent 60%),
+                linear-gradient(to bottom, #062a4d, #0b4f8a, #0e63a9);
+}
 
-/* Responsive adjustments for 13-inch screens (typically < 1440px) */
+.fi-header-heading { color: #1e3a8a !important; }
+.dark .fi-header-heading { color: #ffffff !important; }
+
+/* 7. Responsive Adjustments */
 @media screen and (max-width: 1440px) {
-    :root {
-        /* Slightly reduce sidebar width to give tables more room */
-        --sidebar-width: 16rem; 
-    }
-
-    .fi-main-ctn {
-        /* Ensure the main container respects the new width */
-        margin-inline-start: var(--sidebar-width) !important;
-        width: calc(100% - var(--sidebar-width)) !important;
-    }
+    :root { --sidebar-width: 16rem; }
+    /* No need to re-write .fi-main-ctn here, it uses the variable above */
 }
 
-/* Tablet/Small Laptop adjustments */
 @media screen and (max-width: 1024px) {
     .fi-sidebar {
-        /* On smaller screens, Filament usually hides the sidebar, 
-           but since you forced 'fixed', we ensure it doesn't overlap content */
         position: relative !important;
         height: auto !important;
         width: 100% !important;
     }
-    
     .fi-main-ctn {
         margin-inline-start: 0 !important;
         width: 100% !important;
     }
 }
 
-/* Ensure modals don't exceed screen height on laptops */
-.fi-modal-window {
-    max-height: 95vh !important; /* Uses 85% of the viewport height */
-    display: flex !important;
-    flex-direction: column !important;
+.fi-sidebar-item a[href*="/suppliers"] .fi-sidebar-item-label,
+.fi-sidebar-item a[href*="/suppliers"] .fi-icon {
+    color: gray !important; /* green */
+    font-weight: 600;
 }
 
-/* Make the form area scrollable while keeping the header/footer fixed */
-.fi-modal-content {
-    overflow-y: auto !important;
-    padding-bottom: 2rem !important;
+.fi-sidebar-item.fi-active a[href*="/suppliers"] .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active a[href*="/suppliers"] .fi-icon {
+    color: #3b82f6 !important;
+    font-weight: 700;
 }
 
+.fi-sidebar-item a[href*="/clients"] .fi-sidebar-item-label,
+.fi-sidebar-item a[href*="/clients"] .fi-icon {
+    color: gray !important; /* green */
+    font-weight: 600;
+}
 
+.fi-sidebar-item.fi-active a[href*="/clients"] .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active a[href*="/clients"] .fi-icon {
+    color: #3b82f6 !important;
+    font-weight: 700;
+}
+
+.fi-sidebar-item a[href*="/brands"] .fi-sidebar-item-label,
+.fi-sidebar-item a[href*="/brand"] .fi-icon {
+    color: gray !important; /* green */
+    font-weight: 600;
+}
+
+.fi-sidebar-item.fi-active a[href*="/brands"] .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active a[href*="/brands"] .fi-icon {
+    color: #3b82f6 !important;
+    font-weight: 700;
+}
+
+.fi-sidebar-item a[href*="/products"] .fi-sidebar-item-label,
+.fi-sidebar-item a[href*="/products"] .fi-icon {
+    color: gray !important; /* green */
+    font-weight: 600;
+}
+
+.fi-sidebar-item.fi-active a[href*="/products"] .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active a[href*="/products"] .fi-icon {
+    color: #3b82f6 !important;
+    font-weight: 700;
+}
+
+.fi-sidebar-item a[href*="/job-orders"] .fi-sidebar-item-label,
+.fi-sidebar-item a[href*="/job-orders"] .fi-icon {
+    color: gray !important; /* green */
+    font-weight: 600;
+}
+
+.fi-sidebar-item.fi-active a[href*="/job-orders"] .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active a[href*="/job-orders"] .fi-icon {
+    color: #3b82f6 !important;
+    font-weight: 700;
+}
+
+.fi-sidebar-item a[href*="/installations"] .fi-sidebar-item-label,
+.fi-sidebar-item a[href*="/installations"] .fi-icon {
+    color: gray !important; /* green */
+    font-weight: 600;
+}
+
+.fi-sidebar-item.fi-active a[href*="/installations"] .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active a[href*="/installations"] .fi-icon {
+    color: #3b82f6 !important;
+    font-weight: 700;
+}
 
 
 

@@ -29,6 +29,11 @@ class InstallationsTable
                     ->sortable()
                     ->searchable(),
 
+                    TextColumn::make('jobOrder.client.name')
+                    ->label('Client Name')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('brand.name')
                     ->label('Brand')
                     ->sortable()

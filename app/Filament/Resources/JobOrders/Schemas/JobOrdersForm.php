@@ -8,6 +8,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
 use Filament\Schemas\Schema;
+use App\Models\JobOrder;
 
 class JobOrdersForm
 {
@@ -22,9 +23,9 @@ class JobOrdersForm
                             ->schema([
                                 TextInput::make('jo_number')
                                     ->label('JO Number')
-                                    ->placeholder('Generated automatically')
+                                     ->default(fn() => JobOrder::generateNextJobOrder())
                                     ->disabled()
-                                    ->dehydrated(false), // Handled by Model booting logic
+                                    ->dehydrated(), // Handled by Model booting logic
 
                                 Select::make('client_id')
                                     ->relationship('client', 'name')

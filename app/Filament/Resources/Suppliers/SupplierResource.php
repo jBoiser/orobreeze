@@ -15,17 +15,25 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Clusters\Accounts\AccountsCluster;
 use UnitEnum;
 
 class SupplierResource extends Resource
 {
     protected static ?string $model = Supplier::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Contact Management';
+    // protected static string | UnitEnum | null $navigationGroup = 'Contact Management';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
+    protected static ?string $cluster = AccountsCluster::class;
+
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Supplier';
+    }
 
     public static function form(Schema $schema): Schema
     {

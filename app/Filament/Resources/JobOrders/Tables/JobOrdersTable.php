@@ -27,7 +27,7 @@ class JobOrdersTable
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('client_id')
+                TextColumn::make('client.client_id')
                     ->label('Client ID')
                     ->sortable()
                     ->searchable(),

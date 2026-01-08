@@ -34,4 +34,14 @@ class Client extends Model
 
         return "OB-C-{$nextNumber}";
     }
+
+      public function installation()
+    {
+        return $this->hasMany(installation::class);
+    }
+
+       public function jobOrder()
+    {
+        return $this->hasMany(jobOrder::class);
+    }
 }

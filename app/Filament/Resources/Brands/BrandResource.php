@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Brands;
 
+use App\Filament\Clusters\AcProducts\AcProductsCluster;
 use App\Filament\Resources\Brands\Pages\ListBrands;
 use App\Filament\Resources\Brands\Schemas\BrandForm;
 use App\Filament\Resources\Brands\Tables\BrandsTable;
@@ -19,11 +20,13 @@ class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 
-    protected static string | UnitEnum | null $navigationGroup = 'Product Management';
+    // protected static string | UnitEnum | null $navigationGroup = 'Product Management';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquaresPlus;
 
     protected static ?string $recordTitleAttribute = 'brand';
+
+    protected static ?string $cluster = AcProductsCluster::class;
 
     public static function form(Schema $schema): Schema
     {

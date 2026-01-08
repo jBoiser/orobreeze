@@ -42,6 +42,7 @@ class SupplierForm
                                     ->visible(fn($operation) => $operation === 'edit'),
 
                                 TextInput::make('name')
+                                    ->placeholder('Full Name')
                                     ->label('Name')
                                     ->unique()
                                     ->required(),
@@ -55,10 +56,12 @@ class SupplierForm
                                     ->placeholder('+63 xxx xxx xxxx'),
 
                                 TextInput::make('address')
+                                    ->placeholder('Street, Barangay, City, State')
                                     ->label('Address')
                                     ->required(),
 
                                 TextInput::make('email_address')
+                                    ->placeholder('Email Address')
                                     ->unique()
                                     ->email()
                                     ->required(),
@@ -68,27 +71,31 @@ class SupplierForm
                         Section::make('Supplier Information')
                             ->schema([
                                 TextInput::make('company_name')
+                                    ->placeholder('Company Name')
                                     ->label('Company Name')
                                     ->required(),
 
                                 TextInput::make('owner')
+                                    ->placeholder('Full Name (Optional)')
                                     ->unique()
-                                    ->label("Owner's Name (Optinal)"),
+                                    ->label("Owner's Name"),
 
                                 TextInput::make('office_email_address')
-                                    ->label("Office Email Address (Optional)")
+                                    ->placeholder('Email Address (Optional)')
+                                    ->label("Office Email Address")
                                     ->unique()
                                     ->email(),
 
                                 TextInput::make('office_contact_number')
                                     ->unique()
-                                    ->label("Office Contact (Optional)")
+                                    ->label("Office Contact Number")
                                     ->tel()
                                     ->mask('+63 999 999 9999')
-                                    ->placeholder('+63 xxx xxx xxxx'),
+                                    ->placeholder('+63 xxx xxx xxxx (Optional)'),
 
                                 TextInput::make('office_address')
-                                    ->label("Office Address (Optional)")
+                                    ->placeholder('Street, Barangay, City, State (Optional)')
+                                    ->label("Office Address")
                                     ->columnSpanFull(),
 
                             ])->columns(2),

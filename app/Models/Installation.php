@@ -35,9 +35,15 @@ class Installation extends Model
         return $this->belongsTo(brand::class);
     }
 
-      public function items()
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(client::class);
+    }
+
+        public function items()
     {
         return $this->hasMany(InstallationItem::class);
     }
+
     
 }
