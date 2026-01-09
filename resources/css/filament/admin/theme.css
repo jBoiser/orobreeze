@@ -160,5 +160,18 @@ html { scrollbar-gutter: auto; }
     font-weight: 700;
 }
 
+.fi-sidebar-item a[href*="/installation-prices"] .fi-sidebar-item-label,
+.fi-sidebar-item a[href*="/installation-prices"] .fi-icon {
+    color: gray !important; /* green */
+    font-weight: 600;
+}
+
+.fi-sidebar-item.fi-active a[href*="/installation-prices"] .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active a[href*="/installation-prices"] .fi-icon {
+    color: #3b82f6 !important;
+    font-weight: 700;
+}
+
+
 
 

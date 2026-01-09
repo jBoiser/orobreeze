@@ -27,7 +27,7 @@ class InstallationsResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedWrench;
 
     protected static ?string $recordTitleAttribute = 'Installation';
 

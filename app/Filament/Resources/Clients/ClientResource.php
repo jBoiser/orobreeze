@@ -28,6 +28,8 @@ class ClientResource extends Resource
 
     protected static ?string $cluster = AccountsCluster::class;
 
+       protected static ?string $navigationLabel = 'Client List';
+
 
     protected static ?string $recordTitleAttribute = 'name';
 

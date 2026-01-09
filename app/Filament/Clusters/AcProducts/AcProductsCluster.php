@@ -10,6 +10,11 @@ class AcProductsCluster extends Cluster
 {
    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedComputerDesktop;
 
-      protected static ?string $navigationLabel = 'Product Management';
-       protected static ?int $navigationSort = 30;
+   protected static ?string $navigationLabel = 'Product Management';
+   protected static ?int $navigationSort = 30;
+
+   public static function getClusterBreadcrumb(): ?string
+   {
+      return 'Products';
+   }
 }

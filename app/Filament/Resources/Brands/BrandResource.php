@@ -24,7 +24,11 @@ class BrandResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquaresPlus;
 
+       protected static ?string $navigationLabel = 'Brand List';
+
     protected static ?string $recordTitleAttribute = 'brand';
+
+     protected static ?int $navigationSort = 1;
 
     protected static ?string $cluster = AcProductsCluster::class;
 

@@ -26,6 +26,10 @@ class ProductResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBolt;
 
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationLabel = 'Aircon Price List';
+
     protected static ?string $recordTitleAttribute = 'product';
 
     protected static ?string $cluster = AcProductsCluster::class;

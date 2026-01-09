@@ -28,12 +28,9 @@ class SupplierResource extends Resource
 
     protected static ?string $cluster = AccountsCluster::class;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationLabel = 'Supplier List';
 
-    public static function getNavigationLabel(): string
-    {
-        return 'Supplier';
-    }
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {

@@ -29,7 +29,7 @@ class ProductForm
                                     ->searchable()
                                     ->preload()
                                     ->required(),
-
+ 
                                 TextInput::make('model_name')
                                     ->label('Model No.')
                                     ->unique()
@@ -109,8 +109,8 @@ class ProductForm
                                         '0' => 'No',
                                     ])
                                     ->default(true),
-                                    
-                                    Select::make('refrigerant_type')
+
+                                Select::make('refrigerant_type')
                                     ->label('Refrigerant Type')
                                     ->options([
                                         'R410A' => 'R410A',

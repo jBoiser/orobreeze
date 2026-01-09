@@ -13,6 +13,7 @@
         "spatie/laravel-honeypot": "^4.6"
     },
     "require-dev": {
+        "doctrine/dbal": "^4.4",
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^1.8",
         "laravel/pail": "^1.2.2",
