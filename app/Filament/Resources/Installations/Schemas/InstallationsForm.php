@@ -102,7 +102,7 @@ class InstallationsForm
                                     ->required(),
 
                                 Select::make('status')
-                                    ->options(['onHold' => 'On Hold', 'onGoing' => 'On Going', 'Cancelled' => 'Cancelled'])
+                                    ->options(['onHold' => 'On Hold', 'onGoing' => 'On Going', 'Cancelled' => 'Cancelled', 'Completed' => 'Completed'])
                                     ->default('onHold')
                                     ->required(),
 
@@ -151,7 +151,8 @@ class InstallationsForm
                                                     $set('refrigerant_type', $product->refrigerant_type);
                                                     $set('hp_capacity', $product->hp_capacity);
                                                     $set('outdoor_model', in_array($product->unit_type, ['Split Type', 'Floor Mounted', 'Floor City']) ? $product->outdoor_model : '-');
-
+                                                    $set('description', $product->description);
+                                                    $set('is_inverter', $product->is_inverter ? 1 : 0);
                                                     static::updatePriceFromDiscount($get, $set);
                                                 }
                                             }),
@@ -162,8 +163,10 @@ class InstallationsForm
                                             ->hidden(fn(Get $get) => !$get('unit_type') || $get('unit_type') === 'Window Type')
                                             ->readOnly()
                                             ->dehydrated(),
-                                        TextInput::make('refrigerant_type')->readOnly()->dehydrated(),
+                                        TextInput::make('refrigerant_type')->label('Refrigerant')->readOnly()->dehydrated(),
                                         TextInput::make('hp_capacity')->label('HP Capacity')->readOnly()->dehydrated(),
+                                        TextInput::make('is_inverter')->label('Inverter')->readOnly()->dehydrated(),
+                                        TextInput::make('description')->label('Description')->readOnly()->dehydrated(),
 
                                         Group::make()
                                             ->schema([
@@ -173,7 +176,7 @@ class InstallationsForm
                                                     ->live(onBlur: true)
                                                     ->formatStateUsing(fn($state) => filled($state) ? number_format((float) $state, 2, '.', ',') : null)
                                                     ->dehydrateStateUsing(fn($state) => (float) str_replace(',', '', $state))
-                                                    ->afterStateUpdated(function(Get $get, Set $set, $state) {
+                                                    ->afterStateUpdated(function (Get $get, Set $set, $state) {
                                                         // Ensure the current field stays formatted with commas after manual edit
                                                         $set('srp', number_format((float)str_replace(',', '', $state), 2, '.', ','));
                                                         static::updatePriceFromDiscount($get, $set);
@@ -205,7 +208,7 @@ class InstallationsForm
                                                     ->extraAttributes([
                                                         'onkeydown' => "if (event.key === 'Enter') { event.preventDefault(); }",
                                                     ])
-                                                    ->afterStateUpdated(function(Get $get, Set $set, $state) {
+                                                    ->afterStateUpdated(function (Get $get, Set $set, $state) {
                                                         $set('price', number_format((float)str_replace(',', '', $state), 2, '.', ','));
                                                         static::updateDiscountFromPrice($get, $set);
                                                     }),

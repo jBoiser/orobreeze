@@ -19,8 +19,29 @@ class InstallationItem extends Model
         'srp',
         'quantity',
         'discount',
-        'price'
+        'price',
+        'description',
+        'is_inverter',
     ];
+
+    protected $casts = [
+        'is_inverter' => 'integer', // or 'boolean'
+    ];
+
+    protected static function booted(): void
+    {
+        static::saving(function ($record) {
+            // Check if product_id was provided or changed
+            if ($record->product_id) {
+                $product = Product::find($record->product_id);
+
+                if ($product) {
+                    // Automatically set the model_name from the related Product
+                    $record->model_name = $product->model_name;
+                }
+            }
+        });
+    }
 
     public function brand()
     {
@@ -32,7 +53,7 @@ class InstallationItem extends Model
         return $this->belongsTo(Product::class);
     }
 
-     public function installation()
+    public function installation()
     {
         return $this->belongsTo(installation::class);
     }

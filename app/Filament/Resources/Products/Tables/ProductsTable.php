@@ -65,7 +65,8 @@ class ProductsTable
 
                 IconColumn::make('is_inverter')
                     ->boolean()
-                    ->label('Inverter'),
+                    ->label('Inverter')
+                    ->sortable(),
 
                 TextColumn::make('refrigerant_type')
                     ->label('Refrigerant Type')

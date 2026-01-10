@@ -16,7 +16,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Schemas\Components\Grid;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -73,12 +73,14 @@ class InstallationsTable
                         'onHold' => 'On Hold',
                         'onGoing' => 'On Going',
                         'Cancelled' => 'Cancelled',
+                        'Completed' => 'Completed',
                         default => $state,
                     })
                     ->colors([
                         'warning' => 'onHold',
-                        'success' => 'onGoing',
+                        'primary' => 'onGoing',
                         'danger' => 'Cancelled',
+                        'success' => 'Completed',
                     ])
                     ->sortable(),
 
@@ -89,8 +91,8 @@ class InstallationsTable
                     ->color(fn($state): string => match (true) {
                         !$state => 'gray',
                         Carbon::parse($state)->isPast() => 'danger',
-                        Carbon::parse($state)->isToday() => 'success',
-                        Carbon::parse($state)->isFuture() => 'primary',
+                        Carbon::parse($state)->isToday() => 'primary',
+                        Carbon::parse($state)->isFuture() => 'success',
                         default => 'gray',
                     })
                     ->sortable(),
@@ -102,8 +104,8 @@ class InstallationsTable
                     ->color(fn($state): string => match (true) {
                         !$state => 'gray',
                         Carbon::parse($state)->isPast() => 'danger',
-                        Carbon::parse($state)->isToday() => 'success',
-                        Carbon::parse($state)->isFuture() => 'primary',
+                        Carbon::parse($state)->isToday() => 'primary',
+                        Carbon::parse($state)->isFuture() => 'success',
                         default => 'gray',
                     })
                     ->sortable(),
@@ -125,12 +127,40 @@ class InstallationsTable
                                 ->schema([
                                     InfolistSection::make('General Information')
                                         ->schema([
-                                            Grid::make(3)
+                                            Grid::make(4)
                                                 ->schema([
                                                     TextEntry::make('jobOrder.jo_number')->label('Job Order #'),
                                                     TextEntry::make('jobOrder.client.name')->label('Client'),
                                                     TextEntry::make('service_by')->label('Service By')->badge(),
-                                                    TextEntry::make('status')->badge(),
+                                                    TextEntry::make('status')->badge()->formatStateUsing(fn(string $state): string => match ($state) {
+                                                        'onHold' => 'On Hold',
+                                                        'onGoing' => 'On Going',
+                                                        'Cancelled' => 'Cancelled',
+                                                        'Completed' => 'Completed',
+                                                        default => $state,
+                                                    })
+                                                        ->colors([
+                                                            'warning' => 'onHold',
+                                                            'primary' => 'onGoing',
+                                                            'danger' => 'Cancelled',
+                                                            'success' => 'Completed',
+                                                        ]),
+                                                    TextEntry::make('start_date')->badge()
+                                                        ->color(fn($state): string => match (true) {
+                                                            !$state => 'gray',
+                                                            Carbon::parse($state)->isPast() => 'danger',
+                                                            Carbon::parse($state)->isToday() => 'primary',
+                                                            Carbon::parse($state)->isFuture() => 'success',
+                                                            default => 'gray',
+                                                        }),
+                                                    TextEntry::make('end_date')->badge()
+                                                        ->color(fn($state): string => match (true) {
+                                                            !$state => 'gray',
+                                                            Carbon::parse($state)->isPast() => 'danger',
+                                                            Carbon::parse($state)->isToday() => 'primary',
+                                                            Carbon::parse($state)->isFuture() => 'success',
+                                                            default => 'gray',
+                                                        }),
                                                 ]),
                                         ]),
 
@@ -146,6 +176,8 @@ class InstallationsTable
                                                             TextEntry::make('model_name')->label('Model'),
                                                             TextEntry::make('unit_type')->label('Unit Type'),
                                                             TextEntry::make('hp_capacity')->label('Capacity'),
+                                                            TextEntry::make('description')->label('Description'),
+                                                            IconEntry::make('is_inverter')->label('Inverter')->boolean(),
                                                             TextEntry::make('srp')->label('SRP')->money('PHP')->weight('bold'),
                                                             TextEntry::make('quantity')->label('Qty')->suffix(' units')->weight('bold'),
                                                             TextEntry::make('discount')->label('Discount')->formatStateUsing(fn($state) => (int) $state)->suffix('%')->weight('bold'),
@@ -163,6 +195,7 @@ class InstallationsTable
                                                 ->money('PHP')
                                                 ->weight('bold')
                                                 ->color('danger'),
+
                                         ]),
                                 ])
                         ),
