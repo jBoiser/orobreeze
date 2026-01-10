@@ -29,7 +29,7 @@ class InstallationsTable
                     ->sortable()
                     ->searchable(),
 
-                    TextColumn::make('jobOrder.client.name')
+                TextColumn::make('jobOrder.client.name')
                     ->label('Client Name')
                     ->searchable()
                     ->sortable(),
@@ -143,8 +143,10 @@ class InstallationsTable
             ])
             ->recordActions([
                 ActionGroup::make([
-                    ViewAction::make(),
-                    EditAction::make(),
+                    ViewAction::make()
+                        ->slideOver(),
+                    EditAction::make()
+                        ->slideOver(),
                     DeleteAction::make(),
                     RestoreAction::make()
                         ->color('success'),

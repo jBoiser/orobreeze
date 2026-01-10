@@ -12,6 +12,7 @@ class Installation extends Model
 
     protected $fillable = [
         'job_order_id',
+        'total_price',
         'description',
         'start_date',
         'end_date',

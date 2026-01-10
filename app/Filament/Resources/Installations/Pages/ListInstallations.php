@@ -13,11 +13,12 @@ class ListInstallations extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-             CreateAction::make()
+            CreateAction::make()
                 ->label('New Client')
                 ->icon('heroicon-o-plus')
                 ->modalHeading('Create New Client')
-                ->createAnother(false),
+                ->createAnother(false)
+                ->slideOver()
         ];
     }
 }

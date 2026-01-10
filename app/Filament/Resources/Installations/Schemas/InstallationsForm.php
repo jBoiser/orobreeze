@@ -21,29 +21,51 @@ use App\Models\JobOrder;
 class InstallationsForm
 {
 
-    protected static function updateGrandTotal(Get $get, Set $set): void
+    public static function updatePriceFromDiscount(Get $get, Set $set)
     {
-        $selectedItems = collect($get('items') ?? []);
-        $grandTotal = $selectedItems->sum(fn($item) => (float) ($item['price'] ?? 0));
-        $set('total_price', $grandTotal);
-    }
+        $srp = (float) ($get('srp') ?? 0);
+        $discount = (float) ($get('discount') ?? 0);
+        $qty = (float) ($get('quantity') ?? 1);
 
-    // 2. Individual Row Calculation Function
-    protected static function updateRowTotal(Get $get, Set $set): void
-    {
-        $srp = (float) $get('srp');
-        $qty = (int) $get('quantity');
-        $discountPercent = (float) ($get('discount') ?? 0);
+        // Formula: (SRP - (SRP * Discount%)) * Qty
+        $unitPriceAfterDiscount = $srp - ($srp * ($discount / 100));
+        $totalRowPrice = $unitPriceAfterDiscount * $qty;
 
-        $subtotal = $srp * $qty;
-        $discountAmount = $subtotal * ($discountPercent / 100);
-        $finalPrice = $subtotal - $discountAmount;
+        $set('price', number_format($totalRowPrice, 2, '.', ''));
 
-        $set('price', $finalPrice);
-        // Update grand total whenever a row price changes
         static::updateGrandTotal($get, $set);
     }
 
+    public static function updateDiscountFromPrice(Get $get, Set $set)
+    {
+        $srp = (float) ($get('srp') ?? 0);
+        $totalPrice = (float) ($get('price') ?? 0);
+        $qty = (float) ($get('quantity') ?? 1);
+
+        if ($srp > 0 && $qty > 0) {
+            $unitPrice = $totalPrice / $qty;
+            // Formula: ((SRP - UnitPrice) / SRP) * 100
+            $discountPercentage = (($srp - $unitPrice) / $srp) * 100;
+
+            $set('discount', round($discountPercentage, 2));
+        }
+
+        static::updateGrandTotal($get, $set);
+    }
+
+    public static function updateGrandTotal(Get $get, Set $set)
+    {
+        // Retrieve all items from the repeater
+        $items = $get('../../items') ?? [];
+        $grandTotal = 0;
+
+        foreach ($items as $item) {
+            $grandTotal += (float) ($item['price'] ?? 0);
+        }
+
+        // Set the value to the total_price field outside the repeater
+        $set('../../total_price', number_format($grandTotal, 2, '.', ''));
+    }
 
     public static function configure(Schema $schema): Schema
     {
@@ -54,7 +76,7 @@ class InstallationsForm
                         Section::make('Installation')
                             ->description('Installation Details')
                             ->schema([
-                                // 1. Job Order
+                                // Top Level Fields
                                 Select::make('job_order_id')
                                     ->relationship('jobOrder', 'jo_number')
                                     ->searchable()
@@ -70,8 +92,7 @@ class InstallationsForm
                                     ->label('Client Name')
                                     ->disabled()
                                     ->dehydrated(false)
-                                    // This runs when the form loads (Edit/View modes)
-                                    ->afterStateHydrated(function (Set $set, Get $get, $state) {
+                                    ->afterStateHydrated(function (Set $set, Get $get) {
                                         $jobOrderId = $get('job_order_id');
                                         if ($jobOrderId) {
                                             $jobOrder = JobOrder::with('client')->find($jobOrderId);
@@ -79,28 +100,15 @@ class InstallationsForm
                                         }
                                     }),
 
-                                DatePicker::make('start_date')
-                                    ->label('Start Date'),
+                                DatePicker::make('start_date')->label('Start Date'),
+                                DatePicker::make('end_date')->label('End Date'),
 
-                                DatePicker::make('end_date')
-                                    ->label('End Date'),
-
-                                // New fields
                                 Select::make('service_by')
-                                    ->label('Service By')
-                                    ->options([
-                                        'Team A' => 'Team A',
-                                        'Team B' => 'Team B',
-                                    ])
+                                    ->options(['Team A' => 'Team A', 'Team B' => 'Team B'])
                                     ->required(),
 
                                 Select::make('status')
-                                    ->label('Status')
-                                    ->options([
-                                        'onHold' => 'On Hold',
-                                        'onGoing' => 'On Going',
-                                        'Cancelled' => 'Cancelled',
-                                    ])
+                                    ->options(['onHold' => 'On Hold', 'onGoing' => 'On Going', 'Cancelled' => 'Cancelled'])
                                     ->default('onHold')
                                     ->required(),
 
@@ -111,33 +119,28 @@ class InstallationsForm
                                     ->readOnly()
                                     ->dehydrated(),
 
+                                TextInput::make('remarks')
+                                    ->label('Remarks'),
 
-
+                                // REPEATER START
                                 Repeater::make('items')
-                                    ->hiddenlabel()
-                                    ->label('') // Make sure your Installation model has a 'items' relationship
                                     ->relationship()
                                     ->itemLabel('Unit Details')
-                                    ->schema([ // 2. Brand
-
+                                    ->schema([
+                                        // 1. Brand Selection (MUST BE INSIDE REPEATER)
                                         Select::make('brand_id')
                                             ->relationship('brand', 'name')
                                             ->searchable()
                                             ->preload()
                                             ->live()
-                                            ->afterStateUpdated(function (Set $set) {
-                                                $set('product_id', null);
-                                                $set('model_name', null);
-                                                $set('unit_type', null);
-                                            }),
+                                            ->afterStateUpdated(fn(Set $set) => $set('product_id', null)),
 
-                                        // 3. Product Selection
+                                        // 2. Product Selection (MUST BE INSIDE REPEATER)
                                         Select::make('product_id')
                                             ->label('Select Model')
                                             ->options(function (Get $get) {
                                                 $brandId = $get('brand_id');
-                                                if (!$brandId) return [];
-                                                return Product::where('brand_id', $brandId)->pluck('model_name', 'id');
+                                                return $brandId ? Product::where('brand_id', $brandId)->pluck('model_name', 'id') : [];
                                             })
                                             ->searchable()
                                             ->preload()
@@ -145,44 +148,26 @@ class InstallationsForm
                                             ->required()
                                             ->afterStateUpdated(function (Get $get, Set $set, $state) {
                                                 if (!$state) return;
-
                                                 $product = Product::find($state);
-
                                                 if ($product) {
-                                                    // We set the values here
                                                     $set('model_name', $product->model_name);
                                                     $set('unit_type', $product->unit_type);
                                                     $set('srp', $product->srp);
                                                     $set('refrigerant_type', $product->refrigerant_type);
                                                     $set('hp_capacity', $product->hp_capacity);
+                                                    $set('outdoor_model', in_array($product->unit_type, ['Split Type', 'Floor Mounted', 'Floor City']) ? $product->outdoor_model : '-');
 
-                                                    // Treat Floor Standing like Split Type for outdoor_model
-                                                    if (in_array($product->unit_type, ['Split Type', 'Floor Mounted'], true)) {
-                                                        $set('outdoor_model', $product->outdoor_model);
-                                                    } else {
-                                                        $set('outdoor_model', '-');
-                                                    }
-
-                                                    // Recalculate row total (uses current quantity/discount)
-                                                    static::updateRowTotal($get, $set);
+                                                    static::updatePriceFromDiscount($get, $set);
                                                 }
                                             }),
 
-                                        // --- THE FIXES ---
-                                        TextInput::make('model_name')
-                                            ->readOnly()
-                                            ->dehydrated(),
+                                        TextInput::make('model_name')->readOnly()->dehydrated(),
+                                        TextInput::make('unit_type')->readOnly()->dehydrated(),
 
                                         TextInput::make('outdoor_model')
-                                            ->label('Outdoor Unit Model')
-                                            ->hidden(fn(Get $get) => !$get('unit_type') || $get('unit_type') === 'Window Type') // default hidden; shown when unit_type exists and is not Window Type
+                                            ->hidden(fn(Get $get) => !$get('unit_type') || $get('unit_type') === 'Window Type')
                                             ->readOnly()
                                             ->dehydrated(),
-
-                                        TextInput::make('unit_type')
-                                            ->label('Unit Type')
-                                            ->readOnly()
-                                            ->dehydrated(), // Forces read-only fields to save
 
                                         TextInput::make('refrigerant_type')
                                             ->readOnly()
@@ -192,65 +177,44 @@ class InstallationsForm
                                             ->label('HP Capacity')
                                             ->readOnly()
                                             ->dehydrated(),
-
+                                        // Calculation Row
                                         Group::make()
                                             ->schema([
-
                                                 TextInput::make('srp')
-                                                    ->label('SRP')
-                                                    ->numeric()
-                                                    ->prefix('₱')
-                                                    ->readOnly()
-                                                    ->dehydrated()
-                                                    ->live()
-                                                    ->afterStateUpdated(function (Get $get, Set $set) {
-                                                        static::updateRowTotal($get, $set);
-                                                    }),
+                                                    ->numeric()->prefix('₱')->live()
+                                                    ->afterStateUpdated(fn(Get $get, Set $set) => static::updatePriceFromDiscount($get, $set)),
 
                                                 TextInput::make('quantity')
-                                                    ->numeric()
-                                                    ->default(1)
-                                                    ->live() // Mandatory for live math
-                                                    ->afterStateUpdated(function (Get $get, Set $set) {
-                                                        static::updateRowTotal($get, $set);
-                                                    }),
+                                                    ->numeric()->default(1)->live()
+                                                    ->afterStateUpdated(fn(Get $get, Set $set) => static::updatePriceFromDiscount($get, $set)),
 
                                                 TextInput::make('discount')
                                                     ->numeric()
                                                     ->suffix('%')
                                                     ->default(0)
-                                                    ->live()
-                                                    ->afterStateUpdated(function (Get $get, Set $set) {
-                                                        static::updateRowTotal($get, $set);
-                                                    }),
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn(Get $get, Set $set) => static::updatePriceFromDiscount($get, $set))
+                                                    // Use extraInputAttributes to target the actual HTML input element
+                                                    ->extraInputAttributes([
+                                                        'onfocus' => 'setTimeout(() => this.select(), 10)',
+                                                        'onkeydown' => "if (event.key === 'Enter') { event.preventDefault(); }",
+                                                    ]),
 
                                                 TextInput::make('price')
                                                     ->label('Total Unit Price')
-                                                    ->readOnly()
-                                                    ->extraAlpineAttributes([
-                                                        'x-mask:dynamic' => '$money($input, \'.\', \',\', 2)',
+                                                    ->numeric()->prefix('₱')->live(onBlur: true)
+                                                    ->extraAttributes([
+                                                        'onkeydown' => "if (event.key === 'Enter') { event.preventDefault(); }"
                                                     ])
-                                                    ->afterStateUpdated(function (Get $get, Set $set) {
-                                                        // When a row total changes, update the grand total
-                                                        static::updateGrandTotal($get, $set);
-                                                    }),
-
-                                            ])->columns(4)
-                                            ->columnSpanFull(),
-
+                                                    ->afterStateUpdated(fn(Get $get, Set $set) => static::updateDiscountFromPrice($get, $set)),
+                                            ])->columns(4)->columnSpanFull(),
                                     ])
-                                    ->columns(3) // Display items in a grid layout
+                                    ->columns(4)
                                     ->addActionLabel('Add Another Unit')
                                     ->collapsible()
-                                    ->columnSpanFull(), // Useful if you have many fields per item
-
-                                Textarea::make('remarks')
-                                    ->label('Remarks')
-                                    ->rows(3)
-                                    ->nullable()
                                     ->columnSpanFull(),
-                            ])->columns(3),
-
+                                // REPEATER END
+                            ])->columns(4),
                     ])->columnSpanFull(),
             ]);
     }
