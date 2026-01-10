@@ -56,13 +56,6 @@ class ProductsTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-
-                TextColumn::make('description')
-                    ->label('Description')
-                    ->sortable()
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
                 IconColumn::make('is_inverter')
                     ->boolean()
                     ->label('Inverter')
@@ -76,6 +69,13 @@ class ProductsTable
                 TextColumn::make('srp')
                     ->money('PHP')
                     ->sortable(),
+
+                TextColumn::make('description')
+                    ->label('Description')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
 
             ])
             ->filters([

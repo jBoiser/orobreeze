@@ -29,7 +29,7 @@ class ProductForm
                                     ->searchable()
                                     ->preload()
                                     ->required(),
- 
+
                                 TextInput::make('model_name')
                                     ->label('Model No.')
                                     ->unique()
@@ -73,6 +73,9 @@ class ProductForm
                                         'Window Type' => 'Window Type',
                                         'Split Type' => 'Split Type',
                                         'Floor Mounted' => 'Floor Mounted',
+                                        'Under Ceiling Mounted' => 'Under Ceiling Mounted',
+                                        'Cassette Type' => 'Cassette Type',
+                                        'Ceiling Ducted' => 'Ceiling Ducted',
                                     ])
                                     ->required()
                                     ->live() // Essential: tells Filament to watch for changes
@@ -89,10 +92,17 @@ class ProductForm
                                 Select::make('hp_capacity')
                                     ->label('Capacity')
                                     ->options([
-                                        '1.0HP' => '1.0 HP',
-                                        '1.5HP' => '1.5 HP',
-                                        '2.0HP' => '2.0 HP',
-                                        '2.5HP' => '2.5 HP',
+                                        '0.6HP' => '0.6hp',
+                                        '0.8HP' => '0.8hp',
+                                        '1.0HP' => '1.0hp',
+                                        '1.5HP' => '1.5hp',
+                                        '2.0HP' => '2.0hp',
+                                        '2.5HP' => '2.5hp',
+                                        '3.0HP' => '3.0hp',
+                                        '2T' => '2T',
+                                        '3T' => '3T',
+                                        '4T' => '4T',
+                                        '5T' => '5T',
                                     ])->required(),
 
                                 TextInput::make('outdoor_model')
