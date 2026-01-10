@@ -14,9 +14,9 @@ class ListInstallations extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Client')
+                ->label('New Installation')
                 ->icon('heroicon-o-plus')
-                ->modalHeading('Create New Client')
+                ->modalHeading('Create New Installation')
                 ->createAnother(false)
                 ->slideOver()
         ];

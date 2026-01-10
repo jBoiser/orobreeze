@@ -2,21 +2,26 @@
 
 namespace App\Filament\Resources\Installations\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
+use Carbon\Carbon;
+use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Actions\ViewAction;
-use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Actions\ActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\ForceDeleteAction;
-use Carbon\Carbon;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Infolists\Infolist;
+use Filament\Schemas\Components\Grid;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Schemas\Components\Section as InfolistSection;
 
-use Filament\Tables\Table;
 
 class InstallationsTable
 {
@@ -34,42 +39,23 @@ class InstallationsTable
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('brand.name')
-                    ->label('Brand')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('items.brand.name')
+                    ->label('Brands')
+                    ->listWithLineBreaks()
+                    ->bulleted(),
 
-                TextColumn::make('product.model_name')
-                    ->label('Model')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('items.model_name')
+                    ->label('Models')
+                    ->listWithLineBreaks()
+                    ->weight('bold')
+                    ->color('primary'),
 
-                TextColumn::make('outdoor_model')
-                    ->label('Outdoor Model'),
-
-                TextColumn::make('unit_type')
-                    ->label('Unit Type')
-                    ->sortable(),
-
-                TextColumn::make('outdoor_model')
-                    ->label('Outdoor Model'),
-
-                TextColumn::make('srp')
-                    ->label('SRP')
+                TextColumn::make('total_price')
+                    ->label('Total Amount')
                     ->money('PHP')
+                    ->weight('bold')
+                    ->color('danger')
                     ->sortable(),
-
-                TextColumn::make('hp_capacity')
-                    ->label('HP Capacity'),
-
-                TextColumn::make('refrigerant_type')
-                    ->label('Refrigerant'),
-
-                TextColumn::make('created_at')
-                    ->label('Created')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('service_by')
                     ->label('Service By')
@@ -114,28 +100,17 @@ class InstallationsTable
                     ->date()
                     ->badge()
                     ->color(fn($state): string => match (true) {
-                        // If date is missing
                         !$state => 'gray',
-
-                        // If the date has already passed
                         Carbon::parse($state)->isPast() => 'danger',
-
-                        // If the date is exactly today
                         Carbon::parse($state)->isToday() => 'success',
-
-                        // If the date is still in the future
                         Carbon::parse($state)->isFuture() => 'primary',
-
                         default => 'gray',
                     })
                     ->sortable(),
 
-
-
                 TextColumn::make('remarks')
                     ->label('Remarks')
-                    ->limit(60)
-                    ->wrap()
+                    ->limit(40)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -144,7 +119,53 @@ class InstallationsTable
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->slideOver(),
+                        ->slideOver()
+                        ->infolist(
+                            fn($infolist) => $infolist
+                                ->schema([
+                                    InfolistSection::make('General Information')
+                                        ->schema([
+                                            Grid::make(3)
+                                                ->schema([
+                                                    TextEntry::make('jobOrder.jo_number')->label('Job Order #'),
+                                                    TextEntry::make('jobOrder.client.name')->label('Client'),
+                                                    TextEntry::make('service_by')->label('Service By')->badge(),
+                                                    TextEntry::make('status')->badge(),
+                                                ]),
+                                        ]),
+
+                                    InfolistSection::make('Installed Units')
+                                        ->description('List of all units included in this installation')
+                                        ->schema([
+                                            RepeatableEntry::make('items')
+                                                ->hiddenLabel()
+                                                ->schema([
+                                                    Grid::make(4)
+                                                        ->schema([
+                                                            TextEntry::make('brand.name')->label('Brand')->weight('bold'),
+                                                            TextEntry::make('model_name')->label('Model'),
+                                                            TextEntry::make('unit_type')->label('Unit Type'),
+                                                            TextEntry::make('hp_capacity')->label('Capacity'),
+                                                            TextEntry::make('srp')->label('SRP')->money('PHP')->weight('bold'),
+                                                            TextEntry::make('quantity')->label('Qty')->suffix(' units')->weight('bold'),
+                                                            TextEntry::make('discount')->label('Discount')->formatStateUsing(fn($state) => (int) $state)->suffix('%')->weight('bold'),
+                                                            TextEntry::make('price')->label('Subtotal')->money('PHP')->weight('bold')->color('success'),
+                                                        ]),
+                                                ])
+                                                ->grid(['default' => 1]),
+                                        ]),
+
+                                    InfolistSection::make('Summary')
+                                        ->schema([
+                                            TextEntry::make('total_price')
+                                                ->columnStart(2)
+                                                ->label('Grand Total')
+                                                ->money('PHP')
+                                                ->weight('bold')
+                                                ->color('danger'),
+                                        ]),
+                                ])
+                        ),
                     EditAction::make()
                         ->slideOver(),
                     DeleteAction::make(),
@@ -152,9 +173,9 @@ class InstallationsTable
                         ->color('success'),
                     ForceDeleteAction::make(),
                 ])
-                    ->icon('heroicon-m-ellipsis-vertical') // This sets the 3 dots icon
+                    ->icon('heroicon-m-ellipsis-vertical')
                     ->tooltip('Actions')
-                    ->color('gray'), // Optional: makes the dots more subtle
+                    ->color('gray'),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
