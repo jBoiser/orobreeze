@@ -23,21 +23,22 @@ class JobOrdersTable
         return $table
             ->columns([
                 TextColumn::make('jo_number')
-                    ->label('Job Order Number')
+                    ->label('Job Order No.')
                     ->sortable()
                     ->searchable(),
 
                 TextColumn::make('client.client_id')
                     ->label('Client ID')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('client.name')
-                ->label('Customer Name')
-                ->searchable()
-                ->sortable(),
+                    ->label('Client Name')
+                    ->searchable()
+                    ->sortable(),
 
-                    TextColumn::make('receive_date')
+                TextColumn::make('receive_date')
                     ->label('Receive Date')
                     ->sortable()
                     ->searchable(),
@@ -48,16 +49,50 @@ class JobOrdersTable
                     ->sortable()
                     ->searchable(),
 
+                TextColumn::make('downpayment')
+                    ->money('PHP', true)
+                    ->sortable(),
 
 
-            ])
+                TextColumn::make('balance')
+                    ->money('PHP')
+                    ->color('danger') // Highlights remaining debt
+                    ->weight('bold'),
+
+                TextColumn::make('payment_status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Pending' => 'danger',
+                        'Downpayment' => 'warning',
+                        'Paid' => 'success',
+                    })
+                    ->sortable(),
+
+                TextColumn::make('task_status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'onGoing' => 'info',
+                        'onHold' => 'warning',
+                        'Completed' => 'success',
+                        'Cancelled' => 'danger',
+                    })
+                    ->formatStateUsing(fn(string $state): string => ucfirst($state))
+                    ->sortable(),
+
+                TextColumn::make('remarks')
+                    ->limit(30)
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+            ])->defaultSort('id', 'desc')
+
             ->filters([
                 TrashedFilter::make(),
             ])
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make(),
-                    EditAction::make(),
+                    EditAction::make()
+                    ->label('Update'),
                     DeleteAction::make(),
                     RestoreAction::make()
                         ->color('success'),

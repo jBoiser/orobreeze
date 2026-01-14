@@ -4,7 +4,7 @@
 
 /* 1. Root Variables & Global */
 :root {
-    --sidebar-width: 20rem; /* Define default here */
+    --sidebar-width: 18rem; /* Define default here */
 }
 
 html { scrollbar-gutter: auto; }
@@ -172,6 +172,15 @@ html { scrollbar-gutter: auto; }
     font-weight: 700;
 }
 
+/* Decrease the width of the Cluster sub-navigation container */
+.fi-page-sub-navigation-sidebar-ctn {
+    width: 10rem; /* Default is usually 16rem (w-64). Adjust as needed. */
+    flex-shrink: 0;
+}
 
+/* Optional: Adjust the list itself if it has explicit width constraints */
+.fi-page-sub-navigation-sidebar {
+    width: 100%;
+}
 
 

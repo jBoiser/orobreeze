@@ -18,45 +18,51 @@ class JobOrder extends Model
         'client_id',
         'receive_date',
         'project_cost',
+        'downpayment',
+        'balance', // Add this
+        'remarks', // Add this
+        'payment_status',
+        'task_status',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function ($model) {
+            // Automatically calculate balance before database insertion/update
+            $model->balance = (float) $model->project_cost - (float) $model->downpayment;
+        });
+    }
 
     /**
      * Auto-generate JO Number on Creation
      */
 
-       public static function generateNextJobOrder(): string
+    public static function generateNextJobOrder(): string
     {
-        $lastJobOrder = self::withTrashed()->latest('id')->first();
+        $year = date('y'); // Returns "26"
+
+        // Find the last record that ends with the current year suffix
+        $lastJobOrder = self::withTrashed()
+            ->where('jo_number', 'like', "%-{$year}")
+            ->latest('id')
+            ->first();
 
         if (! $lastJobOrder) {
-            return 'OB-C-001';
+            // If no record exists for this year, start at 0001
+            return "JO-0001-{$year}";
         }
 
-        $lastNumber = (int) str_replace('OB-JO-', '', $lastJobOrder->jo_number);
+        // Split the string by '-' (e.g., "JO-0001-26" becomes ["JO", "0001", "26"])
+        $segments = explode('-', $lastJobOrder->jo_number);
 
-        $nextNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+        // The middle segment (index 1) is our incrementing number
+        $lastNumber = isset($segments[1]) ? (int) $segments[1] : 0;
 
-        return "OB-JO-{$nextNumber}";
+        // Pad to 4 digits as requested
+        $nextNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+
+        return "JO-{$nextNumber}-{$year}";
     }
-
-    // protected static function booted()
-    // {
-    //     static::creating(function ($jobOrder) {
-    //         // Get the last record to determine the next number
-    //         $lastOrder = self::orderBy('id', 'desc')->first();
-
-    //         if (!$lastOrder) {
-    //             $nextNumber = 1;
-    //         } else {
-    //             // Extract the numeric part from 'OB-JO-001'
-    //             $lastNumber = (int) str_replace('OB-JO-', '', $lastOrder->jo_number);
-    //             $nextNumber = $lastNumber + 1;
-    //         }
-
-    //         // Pad with zeros to maintain the 001 format
-    //         $jobOrder->jo_number = 'OB-JO-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-    //     });
-    // }
 
     /**
      * Relationship: A Job Order belongs to a Client
