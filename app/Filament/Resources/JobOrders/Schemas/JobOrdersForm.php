@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\JobOrders\Schemas;
 
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\TextArea;
+use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Group;
